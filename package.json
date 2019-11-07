@@ -2,7 +2,6 @@
   "name": "blocks",
   "version": "1.0.0",
   "description": "draw blocks using three.js",
-  "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server",
     "dist": "webpack --mode=production"
@@ -22,6 +21,7 @@
   },
   "homepage": "https://github.com/ttk1/blocks#readme",
   "devDependencies": {
+    "three": "^0.110.0",
     "ts-loader": "^6.1.1",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3",
