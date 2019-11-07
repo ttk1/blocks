@@ -1,0 +1,32 @@
+{
+  "name": "blocks",
+  "version": "1.0.0",
+  "description": "draw blocks using three.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "dist": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttk1/blocks.git"
+  },
+  "keywords": [
+    "webgl",
+    "three.js"
+  ],
+  "author": "tama@ttk1.net",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ttk1/blocks/issues"
+  },
+  "homepage": "https://github.com/ttk1/blocks#readme",
+  "devDependencies": {
+    "ts-loader": "^6.1.1",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
+  }
+}
