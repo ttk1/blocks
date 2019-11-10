@@ -1,43 +1,43 @@
 import * as THREE from 'three';
 import { Vector3 } from 'three';
 
+const RANGE_SIZE = 1;
+const RESOLUTION = 30;
+const BLOCK_SIZE = RANGE_SIZE / RESOLUTION;
+
 window.onload = () => {
   main();
 };
 
 function main() {
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 150;
+  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, RANGE_SIZE * 10);
+  camera.position.z = RANGE_SIZE * 1.5;
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
-
-  // addCube(0, 0, 0);
-  // addCube(0, 1, 1);
-  // addCube(1, 0, 1);
-  // addCube(1, 1, 0);
 
   sphere();
 
   function sphere() {
     const geometry = new THREE.Geometry();
     function addCube(x: number, y: number, z: number) {
-      const cube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1));
-      // const cube = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5));
-      cube.position.set(x, y, z);
+      const cube = new THREE.Mesh(
+        new THREE.BoxGeometry(BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE / 2)
+      );
+      cube.position.set(
+        x - RANGE_SIZE / 2,
+        y - RANGE_SIZE / 2,
+        z - RANGE_SIZE / 2
+      );
       geometry.mergeMesh(cube);
     }
 
-    const r = 100;
-    for (let x = -r; x < r; x++) {
-      for (let y = -r; y < r; y++) {
-        for (let z = -r; z < r; z++) {
-          if (x ** 2 + y ** 2 + z ** 2 < r ** 2 &&
-            r ** 2 - 40 < x ** 2 + y ** 2 + z ** 2) {
-            addCube(x, y, z);
-          }
+    for (let x = 0; x < RANGE_SIZE; x += BLOCK_SIZE) {
+      for (let y = 0; y < RANGE_SIZE; y += BLOCK_SIZE) {
+        for (let z = 0; z < RANGE_SIZE; z += BLOCK_SIZE) {
+          addCube(x, y, z);
         }
       }
     }
@@ -82,10 +82,10 @@ function main() {
     camera.lookAt(0, 0, 0);
   });
 
-  const animate = () => {
+  animate();
+
+  function animate() {
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
-  };
-
-  animate();
+  }
 }
