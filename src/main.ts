@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Vector3 } from 'three';
 
 const RANGE_SIZE = 1;
-const RESOLUTION = 30;
+const RESOLUTION = 10;
 const BLOCK_SIZE = RANGE_SIZE / RESOLUTION;
 
 window.onload = () => {
