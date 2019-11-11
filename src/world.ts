@@ -30,7 +30,7 @@ export class World {
   public loadChunk(x: number, z: number) {
     this.unloadChunk(x, z);
     const chunk = new Chunk(this.worldName, x, z);
-    this.scene.add(chunk.mesh);
+    this.scene.add(...chunk.meshes);
     this.chunks.set(`${x}:${z}`, chunk);
   }
 
@@ -42,7 +42,7 @@ export class World {
   public unloadChunk(x: number, z: number) {
     if (this.chunks.has(`${x}:${z}`)) {
       const chunk = this.chunks.get(`${x}:${z}`);
-      this.scene.remove(chunk.mesh);
+      this.scene.remove(...chunk.meshes);
       this.chunks.delete(`${x}:${z}`);
     }
   }

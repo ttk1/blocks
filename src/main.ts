@@ -44,6 +44,8 @@ function main() {
   const worldViewer = new WorldViewer('MyWorld', renderer);
   worldViewer.loadChunk(0, 0);
   worldViewer.loadChunk(1, 1);
+  worldViewer.loadChunk(1, 0);
+  worldViewer.loadChunk(0, 1);
 
   animate();
 
