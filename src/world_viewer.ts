@@ -1,4 +1,3 @@
-import THREE = require('three');
 import { Location } from './location';
 import { World } from './world';
 
@@ -19,11 +18,6 @@ export class WorldViewer {
   }
 
   public render(camera: THREE.Camera) {
-    this.renderer.render(this.getScene(), camera);
-  }
-
-  private getScene() {
-    // TODO
-    return new THREE.Scene();
+    this.renderer.render(this.world.scene, camera);
   }
 }
