@@ -1,4 +1,3 @@
-import { Location } from './location';
 import { World } from './world';
 
 export class WorldViewer {
@@ -10,12 +9,12 @@ export class WorldViewer {
     this.renderer = renderer;
   }
 
-  public loadChunk(location: Location) {
-    this.world.loadChunk(location);
+  public loadChunk(x: number, z: number) {
+    this.world.loadChunk(x, z);
   }
 
-  public unloadChunk(location: Location) {
-    this.world.unloadChunk(location);
+  public unloadChunk(x: number, z: number) {
+    this.world.unloadChunk(x, z);
   }
 
   public render(camera: THREE.Camera) {

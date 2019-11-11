@@ -1,6 +1,5 @@
 import THREE = require('three');
 import { Chunk } from './chunk';
-import { Location } from './location';
 
 export class World {
   public scene: THREE.Scene;
@@ -11,31 +10,40 @@ export class World {
     this.worldName = worldName;
     this.chunks = new Map<string, Chunk>();
     this.scene = new THREE.Scene();
+
+    // ライトの設定
+    // 一旦ここに置いておく
+    const light1 = new THREE.DirectionalLight(0xffffff);
+    light1.position.set(100, 200, 300);
+    this.scene.add(light1);
+
+    const light2 = new THREE.DirectionalLight(0xffffff);
+    light2.position.set(-300, -200, -100);
+    this.scene.add(light2);
   }
 
   /**
    * チャンクのデータをロードする。既にロード済みの場合、データを上書きする。
-   * @param location チャンクの位置
+   * @param x チャンクのX座標
+   * @param z チャンクのZ座標
    */
-  public loadChunk(location: Location) {
-    this.unloadChunk(location);
-    if (this.chunks.has(location.toString())) {
-      this.unloadChunk(location);
-    }
-    const chunk = new Chunk(this.worldName, location);
+  public loadChunk(x: number, z: number) {
+    this.unloadChunk(x, z);
+    const chunk = new Chunk(this.worldName, x, z);
     this.scene.add(chunk.mesh);
-    this.chunks.set(location.toString(), chunk);
+    this.chunks.set(`${x}:${z}`, chunk);
   }
 
   /**
    * チャンクのデータを破棄する。
-   * @param location チャンクの位置
+   * @param x チャンクのX座標
+   * @param z チャンクのZ座標
    */
-  public unloadChunk(location: Location) {
-    if (this.chunks.has(location.toString())) {
-      const chunk = this.chunks.get(location.toString());
+  public unloadChunk(x: number, z: number) {
+    if (this.chunks.has(`${x}:${z}`)) {
+      const chunk = this.chunks.get(`${x}:${z}`);
       this.scene.remove(chunk.mesh);
-      this.chunks.delete(location.toString());
+      this.chunks.delete(`${x}:${z}`);
     }
   }
 }

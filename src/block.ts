@@ -1,12 +1,8 @@
 export class Block {
-  private x: number;
-  private y: number;
-  private z: number;
+  public color: number;
 
-  constructor(x: number, y: number, z: number) {
+  constructor() {
     // TODO
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.color = 0xddff00;
   }
 }
