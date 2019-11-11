@@ -1,5 +1,9 @@
+import { Location } from './location';
+
 export class Chunk {
-  constructor() {
-    //
+  public location: Location;
+  constructor(location: Location) {
+    // TODO
+    this.location = location;
   }
 }

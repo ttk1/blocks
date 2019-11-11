@@ -1,5 +1,4 @@
-import * as THREE from 'three';
-import { Vector3 } from 'three';
+import THREE = require('three');
 
 const RANGE_SIZE = 1;
 const RESOLUTION = 10;
@@ -75,7 +74,7 @@ function main() {
     mouseX = event.offsetX;
     mouseY = event.offsetY;
 
-    const diff = new Vector3(diffY, diffX, 0);
+    const diff = new THREE.Vector3(diffY, diffX, 0);
     const angle = diff.length() * 0.01;
     const axis = diff.normalize();
     camera.position.applyAxisAngle(axis, angle);
