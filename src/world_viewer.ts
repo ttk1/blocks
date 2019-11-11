@@ -5,8 +5,9 @@ export class WorldViewer {
   private world: World;
   private renderer: THREE.WebGLRenderer;
 
-  constructor(worldName: string) {
+  constructor(worldName: string, renderer: THREE.WebGLRenderer) {
     this.world = new World(worldName);
+    this.renderer = renderer;
   }
 
   public loadChunk(location: Location) {

@@ -3,9 +3,9 @@ import { Block } from './block';
 import { Location } from './location';
 
 export class Chunk {
+  public mesh: THREE.Mesh;
   private worldName: string;
   private location: Location;
-  private mesh: THREE.Mesh;
 
   constructor(worldName: string, location: Location) {
     this.worldName = worldName;
@@ -15,6 +15,7 @@ export class Chunk {
 
   private getMesh() {
     // TODO
+    // Materialの設定もここでやる
     return new THREE.Mesh();
   }
 
