@@ -1,8 +1,22 @@
 export class Block {
-  public color: number;
+  public color: string;
+  public transparent: boolean;
 
-  constructor() {
+  constructor(blockType: string) {
     // TODO
-    this.color = 0xddff00;
+    this.transparent = false;
+    switch (blockType) {
+      case 'LEGACY_STONE':
+        this.color = 'gray';
+        break;
+      case 'LEGACY_DIRT':
+        this.color = 'brown';
+        break;
+      case 'LEGACY_AIR':
+        this.transparent = true;
+        break;
+      default:
+        this.color = 'white';
+    }
   }
 }

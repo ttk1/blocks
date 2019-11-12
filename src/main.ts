@@ -7,7 +7,7 @@ window.onload = () => {
 
 function main() {
   const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 100;
+  camera.position.z = 50;
 
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight, false);
@@ -43,9 +43,6 @@ function main() {
 
   const worldViewer = new WorldViewer('MyWorld', renderer);
   worldViewer.loadChunk(0, 0);
-  worldViewer.loadChunk(1, 1);
-  worldViewer.loadChunk(1, 0);
-  worldViewer.loadChunk(0, 1);
 
   animate();
 
