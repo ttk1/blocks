@@ -3,7 +3,7 @@ export class Block {
   public transparent: boolean;
 
   constructor(blockType: string) {
-    // TODO
+    // TODO: ブロックごとの色ってどう設定する？
     this.transparent = false;
     switch (blockType) {
       case 'LEGACY_STONE':

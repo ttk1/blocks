@@ -29,9 +29,18 @@ export class World {
    */
   public loadChunk(x: number, z: number) {
     this.unloadChunk(x, z);
-    const chunk = new Chunk(this.worldName, x, z);
-    this.scene.add(...chunk.meshes);
-    this.chunks.set(`${x}:${z}`, chunk);
+    const dataUrl = `http://localhost:9000/?world_name=${this.worldName}&x=${x}&z=${z}`;
+    fetch(dataUrl).then((response) => {
+      return response.json();
+    }).then((data: string[][][]) => {
+      if (data.length === 0) {
+        console.log('データ取得失敗');
+      } else {
+        const chunk = new Chunk(x, z, data);
+        this.scene.add(...chunk.meshes);
+        this.chunks.set(`${x}:${z}`, chunk);
+      }
+    });
   }
 
   /**

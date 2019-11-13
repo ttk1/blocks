@@ -41,7 +41,7 @@ function main() {
     camera.lookAt(0, 0, 0);
   });
 
-  const worldViewer = new WorldViewer('MyWorld', renderer);
+  const worldViewer = new WorldViewer('world', renderer);
   worldViewer.loadChunk(0, 0);
 
   animate();
