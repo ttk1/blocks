@@ -6,13 +6,13 @@ window.onload = () => {
 };
 
 function main() {
-
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
 
   const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.position.z = 50;
+  camera.rotation.order = 'YXZ';
 
   // ctrl+w防止
   window.onbeforeunload = (event: BeforeUnloadEvent) => {
@@ -92,12 +92,8 @@ function main() {
   };
 
   const onMouseMove = (event: MouseEvent) => {
-    const moveX = event.movementX;
-    const moveY = event.movementY;
-    const rotX = moveX * 0.003;
-    const rotY = moveY * 0.003;
-    camera.rotateY(-rotX);
-    camera.rotateX(-rotY);
+    camera.rotation.x += -event.movementY * 0.003;
+    camera.rotation.y += -event.movementX * 0.003;
   };
 
   let willAnimate = false;
