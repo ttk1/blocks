@@ -23,12 +23,14 @@ export class World {
   }
 
   /**
-   * チャンクのデータをロードする。既にロード済みの場合、データを上書きする。
+   * チャンクのデータをロードする。既にロード済みの場合、なにもしない。
    * @param x チャンクのX座標
    * @param z チャンクのZ座標
    */
   public loadChunk(x: number, z: number) {
-    this.unloadChunk(x, z);
+    if (this.chunks.has(`${x}:${z}`)) {
+      return;
+    }
     const dataUrl = `http://localhost:9000/?world_name=${this.worldName}&x=${x}&z=${z}`;
     fetch(dataUrl).then((response) => {
       return response.json();

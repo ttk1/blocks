@@ -98,11 +98,6 @@ function main() {
 
   let willAnimate = false;
   const worldViewer = new WorldViewer('world', renderer);
-  for (let x = -2; x < 2; x++) {
-    for (let z = -2; z < 2; z++) {
-      worldViewer.loadChunk(x, z);
-    }
-  }
 
   const animate = () => {
     camera.translateX(LR);
@@ -113,6 +108,17 @@ function main() {
       requestAnimationFrame(animate);
     }
   };
+
+  const loadChunk = () => {
+    // sceneサイズ増えすぎ注意
+    worldViewer.loadChunk(
+      Math.floor(camera.position.x / 16),
+      Math.floor(camera.position.z / 16)
+    );
+    setTimeout(loadChunk, 1000);
+  };
+
+  loadChunk();
 
   const onLockChange = () => {
     if (document.pointerLockElement === null) {
