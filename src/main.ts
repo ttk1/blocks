@@ -10,8 +10,7 @@ function main() {
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
 
-  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 50;
+  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 32);
   camera.rotation.order = 'YXZ';
 
   // ctrl+w防止
@@ -60,8 +59,6 @@ function main() {
       case 's':
         FB = 1;
         break;
-      default:
-      // nothing to do
     }
   };
 
@@ -86,8 +83,6 @@ function main() {
       case 's':
         FB = 0;
         break;
-      default:
-      // nothing to do
     }
   };
 
@@ -136,6 +131,5 @@ function main() {
     willAnimate = true;
     animate();
   };
-
   document.addEventListener('click', onClick, false);
 }
