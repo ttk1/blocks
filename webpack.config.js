@@ -5,21 +5,28 @@ module.exports = {
     index: './src/main.ts'
   },
   output: {
-    path: path.resolve(__dirname, 'docs'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'main.js'
   },
   devServer: {
-    contentBase: 'docs',
+    contentBase: 'public',
     port: 3000
   },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.js', '.json']
   },
   module: {
     rules: [{
-      test: /\.ts$/,
-      exclude: [/node_modules/],
-      use: 'ts-loader'
-    }]
+        test: /\.glsl$/,
+        exclude: [/node_modules/],
+        use: 'raw-loader'
+      },
+      {
+        test: /\.ts$/,
+        exclude: [/node_modules/],
+        use: 'ts-loader'
+      }
+    ]
   }
 };

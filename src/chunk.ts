@@ -1,4 +1,4 @@
-import THREE = require('three');
+import * as THREE from 'three';
 import { Block } from './block';
 
 export class Chunk {

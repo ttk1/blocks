@@ -1,11 +1,7 @@
-import THREE = require('three');
+import * as THREE from 'three';
 import { WorldViewer } from './world_viewer';
 
 window.onload = () => {
-  main();
-};
-
-function main() {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
@@ -132,4 +128,4 @@ function main() {
     animate();
   };
   document.addEventListener('click', onClick, false);
-}
+};
