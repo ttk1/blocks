@@ -21,12 +21,16 @@ window.onload = () => {
   const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 32);
   camera.rotation.order = 'YXZ';
 
+  let willAnimate = false;
+  let LR = 0; // A-D
+  let FB = 0; // W-S
+  let UD = 0; // SFT-SPC
+
 
   ////////////////////////////////
   // 描画とチャンクのロード
   ////////////////////////////////
 
-  let willAnimate = false;
   const worldViewer = new WorldViewer('world', renderer);
 
   const animate = () => {
@@ -76,10 +80,6 @@ window.onload = () => {
     32: 'spc',
     16: 'sft'
   };
-
-  let LR = 0; // A-D
-  let FB = 0; // W-S
-  let UD = 0; // SFT-SPC
 
   const onKeyDown = (event: KeyboardEvent) => {
     const key = keymap[event.keyCode];
