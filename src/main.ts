@@ -1,8 +1,19 @@
 import * as THREE from 'three';
 import { WorldViewer } from './world_viewer';
 
+function getRenderer() {
+  const cvs = document.createElement('canvas');
+  const ctx = cvs.getContext('webgl2', {
+    alpha: false
+  });
+  return new THREE.WebGLRenderer({
+    canvas: cvs,
+    context: ctx as WebGLRenderingContext
+  });
+}
+
 window.onload = () => {
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = getRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
 
@@ -22,17 +33,19 @@ window.onload = () => {
   };
   window.addEventListener('resize', onRezise);
 
-  const keymap = {};
-  keymap[65] = 'a';
-  keymap[83] = 's';
-  keymap[68] = 'd';
-  keymap[87] = 'w';
-  keymap[17] = 'ctl';
-  keymap[32] = 'spc';
+  const keymap = {
+    65: 'a',
+    83: 's',
+    68: 'd',
+    87: 'w',
+    17: 'ctl',
+    32: 'spc',
+    16: 'sft'
+  };
 
   let LR = 0; // A-D
   let FB = 0; // W-S
-  let UD = 0; // CTL-SPC
+  let UD = 0; // SFT-SPC
 
   const onKeyDown = (event: KeyboardEvent) => {
     const key = keymap[event.keyCode];
@@ -43,7 +56,7 @@ window.onload = () => {
       case 'd':
         LR = 1;
         break;
-      case 'ctl':
+      case 'sft':
         UD = -1;
         break;
       case 'spc':
@@ -67,7 +80,7 @@ window.onload = () => {
       case 'd':
         LR = 0;
         break;
-      case 'ctl':
+      case 'sft':
         UD = 0;
         break;
       case 'spc':
