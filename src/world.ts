@@ -39,7 +39,7 @@ export class World {
         console.log('データ取得失敗');
       } else {
         const chunk = new Chunk(x, z, data);
-        this.scene.add(...chunk.meshes);
+        this.scene.add(chunk.mesh);
         this.chunks.set(`${x}:${z}`, chunk);
       }
     });
@@ -53,7 +53,7 @@ export class World {
   public unloadChunk(x: number, z: number) {
     if (this.chunks.has(`${x}:${z}`)) {
       const chunk = this.chunks.get(`${x}:${z}`);
-      this.scene.remove(...chunk.meshes);
+      this.scene.remove(chunk.mesh);
       this.chunks.delete(`${x}:${z}`);
     }
   }

@@ -18,18 +18,17 @@ window.onload = () => {
   renderer.setSize(window.innerWidth, window.innerHeight, false);
   document.body.appendChild(renderer.domElement);
 
-  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 32);
+  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 16 * 4);
   camera.rotation.order = 'YXZ';
-
-  let willAnimate = false;
-  let LR = 0; // A-D
-  let FB = 0; // W-S
-  let UD = 0; // SFT-SPC
 
 
   ////////////////////////////////
   // 描画とチャンクのロード
   ////////////////////////////////
+
+  let LR = 0; // A-D
+  let FB = 0; // W-S
+  let UD = 0; // SFT-SPC
 
   const worldViewer = new WorldViewer('world', renderer);
 
@@ -38,9 +37,6 @@ window.onload = () => {
     camera.translateZ(FB);
     camera.translateY(UD);
     worldViewer.render(camera);
-    if (willAnimate) {
-      requestAnimationFrame(animate);
-    }
   };
 
   const loadChunk = () => {
@@ -49,9 +45,8 @@ window.onload = () => {
       Math.floor(camera.position.x / 16),
       Math.floor(camera.position.z / 16)
     );
-    setTimeout(loadChunk, 1000);
   };
-  loadChunk();
+  setInterval(loadChunk, 1000);
 
 
   ////////////////////////////////
@@ -134,10 +129,12 @@ window.onload = () => {
     camera.rotation.y += -event.movementX * 0.003;
   };
 
+  let animateId = null;
+
   const onLockChange = () => {
     if (document.pointerLockElement === null) {
       document.removeEventListener('mousemove', onMouseMove, false);
-      willAnimate = false;
+      clearInterval(animateId);
     }
   };
 
@@ -147,8 +144,7 @@ window.onload = () => {
     window.addEventListener('keyup', onKeyUp, false);
     document.addEventListener('mousemove', onMouseMove, false);
     document.addEventListener('pointerlockchange', onLockChange, false);
-    willAnimate = true;
-    animate();
+    animateId = setInterval(animate, 30);
   };
   document.addEventListener('click', onClick, false);
 };
