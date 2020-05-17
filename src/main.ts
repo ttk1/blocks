@@ -32,13 +32,16 @@ window.onload = () => {
 
   const worldViewer = new WorldViewer('world', renderer);
 
+  // TODO: FPSのコントロール
   const animate = () => {
+    // TODO: カメラの移動をグローバルな座標でやる
     camera.translateX(LR);
     camera.translateZ(FB);
     camera.translateY(UD);
     worldViewer.render(camera);
   };
 
+  // TODO: 重複してロードされるのを何とかしたい
   const loadChunk = () => {
     // sceneサイズ増えすぎ注意
     worldViewer.loadChunk(

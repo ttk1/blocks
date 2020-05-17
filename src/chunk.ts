@@ -36,7 +36,7 @@ export class Chunk {
             y,
             z + this.z * 16
           );
-          colorArray.push(1, 2, 3);
+          colorArray.push(...block.color);
         }
       }
     }

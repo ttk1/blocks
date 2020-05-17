@@ -1,5 +1,12 @@
+// https://en.wikipedia.org/wiki/Web_colors
+const color = {
+  'gray': [128, 128, 128].map(v => v / 255),
+  'brown': [165, 42, 42].map(v => v / 255),
+  'white': [255, 255, 255].map(v => v / 255),
+};
+
 export class Block {
-  public color: string;
+  public color: number[];
   public transparent: boolean;
 
   constructor(blockType: string) {
@@ -10,13 +17,13 @@ export class Block {
         this.transparent = true;
         break;
       case 'LEGACY_STONE':
-        this.color = 'gray';
+        this.color = color.gray;
         break;
       case 'LEGACY_DIRT':
-        this.color = 'brown';
+        this.color = color.brown;
         break;
       default:
-        this.color = 'white';
+        this.color = color.white;
     }
   }
 }
