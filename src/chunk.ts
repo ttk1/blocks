@@ -1,11 +1,26 @@
 import * as THREE from 'three';
 import { Block } from './block';
 
-const originalGeometory = new THREE.BoxBufferGeometry(1, 1, 1);
+// texture
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+const textureStone = cubeTextureLoader.load([
+  'texture/stone.png',
+  'texture/stone.png',
+  'texture/stone.png',
+  'texture/stone.png',
+  'texture/stone.png',
+  'texture/stone.png'
+]);
 
+const originalGeometory = new THREE.BoxBufferGeometry(1, 1, 1);
 const material = new THREE.ShaderMaterial({
   lights: true,
-  uniforms: THREE.ShaderLib.standard.uniforms,
+  uniforms: {
+    ...THREE.ShaderLib.standard.uniforms,
+    tCube: {
+      value: textureStone
+    }
+  },
   vertexShader: require('./glsl/vert.glsl').default as string,
   fragmentShader: require('./glsl/frag.glsl').default as string
 });
