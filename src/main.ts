@@ -8,6 +8,7 @@ window.onload = () => {
 
   const cvs = document.createElement('canvas');
   const ctx = cvs.getContext('webgl2', {
+    antialias: false, // TODO: 性能に応じてON/OFF切り替え
     alpha: false
   });
 
