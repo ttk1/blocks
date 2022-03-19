@@ -13,6 +13,7 @@ window.onload = async () => {
     antialias: false, // TODO: 性能に応じてON/OFF切り替え
     alpha: false
   });
+  const info = document.body.appendChild(document.createElement('pre'));
   const renderer = new MVP.Renderer(ctx);
   const camera = new MVP.PerspectiveCamera(
     new MVP.Vec3(0, 0, 10), // pos
@@ -29,7 +30,7 @@ window.onload = async () => {
   // };
   const textureImages = [
     await MVP.fetchImage('./texture/gray.png'),
-    await MVP.fetchImage('./texture/brown.pngzzz'),
+    await MVP.fetchImage('./texture/brown.png'),
     await MVP.fetchImage('./texture/white.png')
   ];
   const worldViewer = new WorldViewer('world', renderer, textureImages);
@@ -50,6 +51,16 @@ window.onload = async () => {
       keyboard.getFB() * timeGap / 50
     ));
     worldViewer.render(camera);
+
+    // 情報表示
+    info.innerHTML = `FPS: ${1 / timeGap * 1000}
+cameraPosX: ${camera.position.x}
+cameraPosY: ${camera.position.y}
+cameraPosZ: ${camera.position.z}
+cameraRotX: ${camera.rotation.x}
+cameraRotY: ${camera.rotation.y}
+cameraRotZ: ${camera.rotation.z}`;
+
     requestId = requestAnimationFrame(step);
   };
 
