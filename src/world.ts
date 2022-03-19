@@ -4,12 +4,14 @@ import { Chunk } from './chunk';
 export class World {
   public scene: THREE.Scene;
   private worldName: string;
+  private loadChunkTasks: Set<string>;
   private chunks: Map<string, Chunk>;
 
   constructor(worldName: string) {
-    this.worldName = worldName;
-    this.chunks = new Map<string, Chunk>();
     this.scene = new THREE.Scene();
+    this.worldName = worldName;
+    this.loadChunkTasks = new Set();
+    this.chunks = new Map<string, Chunk>();
 
     // ライトの設定
     // 一旦ここに置いておく
@@ -28,9 +30,10 @@ export class World {
    * @param z チャンクのZ座標
    */
   public loadChunk(x: number, z: number) {
-    if (this.chunks.has(`${x}:${z}`)) {
+    if (this.chunks.has(`${x}:${z}`) || this.loadChunkTasks.has(`${x}:${z}`)) {
       return;
     }
+    this.loadChunkTasks.add(`${x}:${z}`);
     const dataUrl = `http://localhost:9000/?world_name=${this.worldName}&x=${x}&z=${z}`;
     fetch(dataUrl).then((response) => {
       return response.json();
@@ -42,6 +45,8 @@ export class World {
         this.scene.add(chunk.mesh);
         this.chunks.set(`${x}:${z}`, chunk);
       }
+    }).finally(() => {
+      this.loadChunkTasks.delete(`${x}:${z}`);
     });
   }
 

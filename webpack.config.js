@@ -9,7 +9,9 @@ module.exports = {
     filename: 'main.js'
   },
   devServer: {
-    contentBase: 'public',
+    static: {
+      directory: 'public',
+    },
     port: 3000
   },
   devtool: 'inline-source-map',
@@ -18,15 +20,15 @@ module.exports = {
   },
   module: {
     rules: [{
-        test: /\.glsl$/,
-        exclude: [/node_modules/],
-        use: 'raw-loader'
-      },
-      {
-        test: /\.ts$/,
-        exclude: [/node_modules/],
-        use: 'ts-loader'
-      }
+      test: /\.glsl$/,
+      exclude: [/node_modules/],
+      use: 'raw-loader'
+    },
+    {
+      test: /\.ts$/,
+      exclude: [/node_modules/],
+      use: 'ts-loader'
+    }
     ]
   }
 };

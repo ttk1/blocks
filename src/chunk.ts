@@ -25,9 +25,9 @@ export class Chunk {
     const offsetArray = [];
     const colorArray = [];
     for (let x = 0; x < 16; x++) {
-      for (let y = 0; y < 256; y++) {
+      for (let y = -64; y < 320; y++) {
         for (let z = 0; z < 16; z++) {
-          const block = new Block(chunkData[x][y][z]);
+          const block = new Block(chunkData[x][y + 64][z]);
           if (block.transparent) {
             continue;
           }

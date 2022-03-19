@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { World } from './world';
 
 export class WorldViewer {
