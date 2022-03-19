@@ -1,2 +1,3 @@
 node_modules/
 src/chunk_data.json
+public/main.js

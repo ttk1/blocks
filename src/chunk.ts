@@ -1,29 +1,20 @@
-import * as THREE from 'three';
+import * as MVP from '@ttk1/webgl2_mvp';
 import { Block } from './block';
 
-const originalGeometory = new THREE.BoxBufferGeometry(1, 1, 1);
-
-const material = new THREE.ShaderMaterial({
-  lights: true,
-  uniforms: THREE.ShaderLib.standard.uniforms,
-  vertexShader: require('./glsl/vert.glsl').default as string,
-  fragmentShader: require('./glsl/frag.glsl').default as string
-});
-
 export class Chunk {
-  public mesh: THREE.Mesh;
   private x: number;
   private z: number;
+  public mesh: MVP.InstancedCube;
 
-  constructor(x: number, z: number, chunkData: string[][][]) {
+  constructor(x: number, z: number, chunkData: string[][][], textureImages: HTMLImageElement[]) {
     this.x = x;
     this.z = z;
-    this.mesh = this.getMesh(chunkData);
+    this.mesh = this.getMesh(chunkData, textureImages);
   }
 
-  private getMesh(chunkData: string[][][]) {
-    const offsetArray = [];
-    const colorArray = [];
+  private getMesh(chunkData: string[][][], textureImages: HTMLImageElement[]) {
+    const mesh = new MVP.InstancedCube();
+    mesh.setTextureImages(textureImages);
     for (let x = 0; x < 16; x++) {
       for (let y = -64; y < 320; y++) {
         for (let z = 0; z < 16; z++) {
@@ -31,28 +22,14 @@ export class Chunk {
           if (block.transparent) {
             continue;
           }
-          offsetArray.push(
+          mesh.addInstance(new MVP.Vec3(
             x + this.x * 16,
             y,
             z + this.z * 16
-          );
-          colorArray.push(...block.color);
+          ), block.textureId);
         }
       }
     }
-
-    const instancedGeometory = new THREE.InstancedBufferGeometry();
-    instancedGeometory.setAttribute('position', originalGeometory.getAttribute('position'));
-    instancedGeometory.setAttribute('normal', originalGeometory.getAttribute('normal'));
-    instancedGeometory.setIndex(originalGeometory.getIndex());
-
-    const offset = new THREE.InstancedBufferAttribute(new Float32Array(offsetArray), 3, false);
-    const color = new THREE.InstancedBufferAttribute(new Float32Array(colorArray), 3, false);
-    instancedGeometory.setAttribute('offset', offset);
-    instancedGeometory.setAttribute('color', color);
-
-    const mesh = new THREE.Mesh(instancedGeometory, material);
-    mesh.frustumCulled = false;
     return mesh;
   }
 }

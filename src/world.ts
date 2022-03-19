@@ -1,27 +1,24 @@
-import * as THREE from 'three';
+import * as MVP from '@ttk1/webgl2_mvp';
 import { Chunk } from './chunk';
 
 export class World {
-  public scene: THREE.Scene;
+  public scene: MVP.Scene;
   private worldName: string;
   private loadChunkTasks: Set<string>;
   private chunks: Map<string, Chunk>;
+  private textureImages: HTMLImageElement[];
 
-  constructor(worldName: string) {
-    this.scene = new THREE.Scene();
+  constructor(worldName: string, textureImages: HTMLImageElement[]) {
+    this.scene = new MVP.Scene();
     this.worldName = worldName;
     this.loadChunkTasks = new Set();
     this.chunks = new Map<string, Chunk>();
+    this.textureImages = textureImages;
 
     // ライトの設定
     // 一旦ここに置いておく
-    const light1 = new THREE.DirectionalLight(0xffffff);
-    light1.position.set(100, 200, 300);
-    this.scene.add(light1);
-
-    const light2 = new THREE.DirectionalLight(0xffffff);
-    light2.position.set(-300, -200, -100);
-    this.scene.add(light2);
+    this.scene.addLight(new MVP.Light(1, 2, 3));
+    this.scene.addLight(new MVP.Light(-1, -2, -3));
   }
 
   /**
@@ -41,8 +38,8 @@ export class World {
       if (data.length === 0) {
         console.log('データ取得失敗');
       } else {
-        const chunk = new Chunk(x, z, data);
-        this.scene.add(chunk.mesh);
+        const chunk = new Chunk(x, z, data, this.textureImages);
+        this.scene.addMesh(chunk.mesh);
         this.chunks.set(`${x}:${z}`, chunk);
       }
     }).finally(() => {
@@ -58,7 +55,7 @@ export class World {
   public unloadChunk(x: number, z: number) {
     if (this.chunks.has(`${x}:${z}`)) {
       const chunk = this.chunks.get(`${x}:${z}`);
-      this.scene.remove(chunk.mesh);
+      this.scene.removeMesh(chunk.mesh);
       this.chunks.delete(`${x}:${z}`);
     }
   }

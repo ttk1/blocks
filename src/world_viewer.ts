@@ -1,12 +1,12 @@
-import * as THREE from 'three';
+import * as MVP from '@ttk1/webgl2_mvp';
 import { World } from './world';
 
 export class WorldViewer {
   private world: World;
-  private renderer: THREE.WebGLRenderer;
+  private renderer: MVP.Renderer;
 
-  constructor(worldName: string, renderer: THREE.WebGLRenderer) {
-    this.world = new World(worldName);
+  constructor(worldName: string, renderer: MVP.Renderer, textureImages: HTMLImageElement[]) {
+    this.world = new World(worldName, textureImages);
     this.renderer = renderer;
   }
 
@@ -18,7 +18,7 @@ export class WorldViewer {
     this.world.unloadChunk(x, z);
   }
 
-  public render(camera: THREE.Camera) {
+  public render(camera: MVP.PerspectiveCamera) {
     this.renderer.render(this.world.scene, camera);
   }
 }

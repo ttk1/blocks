@@ -7,6 +7,7 @@ const color = {
 
 export class Block {
   public color: number[];
+  public textureId: number;
   public transparent: boolean;
 
   constructor(blockType: string) {
@@ -18,12 +19,15 @@ export class Block {
         break;
       case 'LEGACY_STONE':
         this.color = color.gray;
+        this.textureId = 0;
         break;
       case 'LEGACY_DIRT':
         this.color = color.brown;
+        this.textureId = 1;
         break;
       default:
         this.color = color.white;
+        this.textureId = 2;
     }
   }
 }

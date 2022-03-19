@@ -1,48 +1,58 @@
-import * as THREE from 'three';
+import * as MVP from '@ttk1/webgl2_mvp';
 import { WorldViewer } from './world_viewer';
 
-window.onload = () => {
+window.onload = async () => {
   ////////////////////////////////
   // 初期化
   ////////////////////////////////
 
-  const cvs = document.createElement('canvas');
+  const cvs = document.body.appendChild(document.createElement('canvas'));
+  cvs.width = 1000;
+  cvs.height = 500;
   const ctx = cvs.getContext('webgl2', {
     antialias: false, // TODO: 性能に応じてON/OFF切り替え
     alpha: false
   });
-
-  const renderer = new THREE.WebGLRenderer({
-    canvas: cvs,
-    context: ctx as WebGLRenderingContext
-  });
-  renderer.setSize(window.innerWidth, window.innerHeight, false);
-  document.body.appendChild(renderer.domElement);
-
-  const camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 16 * 4);
-  camera.rotation.order = 'YXZ';
+  const renderer = new MVP.Renderer(ctx);
+  const camera = new MVP.PerspectiveCamera(
+    new MVP.Vec3(0, 0, 10), // pos
+    new MVP.Vec3(0, 0, 0),  // rot
+    1, // fov
+    cvs.width / cvs.height, // aspect, w/h
+    1, // near
+    100 // far
+  );
+  // const textureImages = {
+  //   'gray': await MVP.fetchImage('./texture/gray.png'),
+  //   'brown': await MVP.fetchImage('./texture/brown.png'),
+  //   'white': await MVP.fetchImage('./texture/white.png')
+  // };
+  const textureImages = [
+    await MVP.fetchImage('./texture/gray.png'),
+    await MVP.fetchImage('./texture/brown.pngzzz'),
+    await MVP.fetchImage('./texture/white.png')
+  ];
+  const worldViewer = new WorldViewer('world', renderer, textureImages);
 
 
   ////////////////////////////////
-  // 描画とチャンクのロード
+  // ループ処理
   ////////////////////////////////
 
-  let LR = 0; // A-D
-  let FB = 0; // W-S
-  let UD = 0; // SFT-SPC
-
-  const worldViewer = new WorldViewer('world', renderer);
-
-  // TODO: FPSのコントロール
-  const animate = () => {
-    // TODO: カメラの移動をグローバルな座標でやる
-    camera.translateX(LR);
-    camera.translateZ(FB);
-    camera.translateY(UD);
+  let requestId = null;
+  let lastTimestamp = null;
+  const step = async (timestamp: number) => {
+    const timeGap = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+    camera.move(new MVP.Vec3(
+      keyboard.getLR() * timeGap / 50,
+      keyboard.getUD() * timeGap / 50,
+      keyboard.getFB() * timeGap / 50
+    ));
     worldViewer.render(camera);
+    requestId = requestAnimationFrame(step);
   };
 
-  // TODO: 重複してロードされるのを何とかしたい
   const loadChunk = () => {
     // sceneサイズ増えすぎ注意
     worldViewer.loadChunk(
@@ -52,10 +62,21 @@ window.onload = () => {
   };
   setInterval(loadChunk, 1000);
 
-
-  ////////////////////////////////
-  // イベント処理
-  ////////////////////////////////
+  const keyboard = new MVP.FPSKeyboard(window);
+  new MVP.FPSMouse(window, camera);
+  document.addEventListener('pointerlockchange', () => {
+    if (document.pointerLockElement == null) {
+      if (requestId != null) {
+        cancelAnimationFrame(requestId);
+      }
+    } else {
+      lastTimestamp = performance.now();
+      requestId = requestAnimationFrame(step);
+    }
+  }, false);
+  document.addEventListener('click', () => {
+    document.body.requestPointerLock();
+  }, false);
 
   // ctrl+w防止
   window.onbeforeunload = (event: BeforeUnloadEvent) => {
@@ -63,92 +84,11 @@ window.onload = () => {
     event.returnValue = null;
   };
 
-  const onRezise = () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    renderer.setSize(window.innerWidth, window.innerHeight, false);
-    camera.updateProjectionMatrix();
-  };
-  window.addEventListener('resize', onRezise);
-
-  const keymap = {
-    65: 'a',
-    83: 's',
-    68: 'd',
-    87: 'w',
-    17: 'ctl',
-    32: 'spc',
-    16: 'sft'
-  };
-
-  const onKeyDown = (event: KeyboardEvent) => {
-    const key = keymap[event.keyCode];
-    switch (key) {
-      case 'a':
-        LR = -1;
-        break;
-      case 'd':
-        LR = 1;
-        break;
-      case 'sft':
-        UD = -1;
-        break;
-      case 'spc':
-        UD = 1;
-        break;
-      case 'w':
-        FB = -1;
-        break;
-      case 's':
-        FB = 1;
-        break;
-    }
-  };
-
-  const onKeyUp = (event: KeyboardEvent) => {
-    const key = keymap[event.keyCode];
-    switch (key) {
-      case 'a':
-        LR = 0;
-        break;
-      case 'd':
-        LR = 0;
-        break;
-      case 'sft':
-        UD = 0;
-        break;
-      case 'spc':
-        UD = 0;
-        break;
-      case 'w':
-        FB = 0;
-        break;
-      case 's':
-        FB = 0;
-        break;
-    }
-  };
-
-  const onMouseMove = (event: MouseEvent) => {
-    camera.rotation.x += -event.movementY * 0.003;
-    camera.rotation.y += -event.movementX * 0.003;
-  };
-
-  let animateId = null;
-
-  const onLockChange = () => {
-    if (document.pointerLockElement === null) {
-      document.removeEventListener('mousemove', onMouseMove, false);
-      clearInterval(animateId);
-    }
-  };
-
-  const onClick = () => {
-    document.body.requestPointerLock();
-    window.addEventListener('keydown', onKeyDown, false);
-    window.addEventListener('keyup', onKeyUp, false);
-    document.addEventListener('mousemove', onMouseMove, false);
-    document.addEventListener('pointerlockchange', onLockChange, false);
-    animateId = setInterval(animate, 30);
-  };
-  document.addEventListener('click', onClick, false);
+  // リサイズ処理
+  // const onRezise = () => {
+  //   camera.aspect = window.innerWidth / window.innerHeight;
+  //   renderer.setSize(window.innerWidth, window.innerHeight, false);
+  //   camera.updateProjectionMatrix();
+  // };
+  // window.addEventListener('resize', onRezise);
 };
