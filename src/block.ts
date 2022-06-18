@@ -17,11 +17,11 @@ export class Block {
       case null:
         this.transparent = true;
         break;
-      case 'LEGACY_STONE':
+      case 'STONE':
         this.color = color.gray;
         this.textureId = 0;
         break;
-      case 'LEGACY_DIRT':
+      case 'DIRT':
         this.color = color.brown;
         this.textureId = 1;
         break;
