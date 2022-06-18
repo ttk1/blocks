@@ -53,7 +53,7 @@ window.onload = async () => {
     worldViewer.render(camera);
 
     // 情報表示
-    info.innerHTML = `FPS: ${1 / timeGap * 1000}
+    info.textContent = `FPS: ${1 / timeGap * 1000}
 cameraPosX: ${camera.position.x}
 cameraPosY: ${camera.position.y}
 cameraPosZ: ${camera.position.z}
@@ -71,7 +71,7 @@ cameraRotZ: ${camera.rotation.z}`;
       Math.floor(camera.position.z / 16)
     );
   };
-  setInterval(loadChunk, 1000);
+  setInterval(loadChunk, 100);
 
   const keyboard = new MVP.FPSKeyboard(window);
   new MVP.FPSMouse(window, camera);

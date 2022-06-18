@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/ttk1/blocks#readme",
   "devDependencies": {
-    "@ttk1/webgl2_mvp": "^1.0.2",
+    "@ttk1/webgl2_mvp": "^1.0.3",
     "@types/webgl2": "0.0.6",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
