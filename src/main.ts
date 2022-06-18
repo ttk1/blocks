@@ -34,6 +34,7 @@ window.onload = async () => {
     await MVP.fetchImage('./texture/white.png')
   ];
   const worldViewer = new WorldViewer('world', renderer, textureImages);
+  const chunkRange = 7;
 
 
   ////////////////////////////////
@@ -50,7 +51,7 @@ window.onload = async () => {
       keyboard.getUD() * timeGap / 50,
       keyboard.getFB() * timeGap / 50
     ));
-    worldViewer.render(camera);
+    worldViewer.render(camera, chunkRange);
 
     // 情報表示
     info.textContent = `FPS: ${1 / timeGap * 1000}
@@ -64,14 +65,24 @@ cameraRotZ: ${camera.rotation.z}`;
     requestId = requestAnimationFrame(step);
   };
 
+  // 周囲のチャンク chunkRange の幅だけロードする。
+  // チャンクの読み込み過ぎに注意。
+  // const loadChunk = () => {
+  //   const centerX = Math.floor(camera.position.x / 16);
+  //   const centerZ = Math.floor(camera.position.z / 16);
+  //   for (let modX = -chunkRange; modX < chunkRange; modX++) {
+  //     for (let modZ = -chunkRange; modZ < chunkRange; modZ++) {
+  //       worldViewer.loadChunk(centerX + modX, centerZ + modZ);
+  //     }
+  //   }
+  // };
   const loadChunk = () => {
-    // sceneサイズ増えすぎ注意
     worldViewer.loadChunk(
       Math.floor(camera.position.x / 16),
       Math.floor(camera.position.z / 16)
     );
   };
-  setInterval(loadChunk, 100);
+  setInterval(loadChunk, 1000);
 
   const keyboard = new MVP.FPSKeyboard(window);
   new MVP.FPSMouse(window, camera);

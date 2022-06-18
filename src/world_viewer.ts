@@ -38,7 +38,6 @@ export class WorldViewer {
       for (let modZ = -range; modZ < range; modZ++) {
         const chunk = this.world.getChunk(centerX + modX, centerZ + modZ);
         if (chunk != null) {
-          console.log(`${modX},${modZ}`);
           meshes.push(chunk.mesh);
         }
       }

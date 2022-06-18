@@ -25,15 +25,17 @@ export class World {
     }
     this.loadChunkTasks.add(`${x}:${z}`);
     const dataUrl = `http://localhost:9000/?world_name=${this.worldName}&x=${x}&z=${z}`;
-    fetch(dataUrl).then((response) => {
+    fetch(dataUrl).then(response => {
       return response.json();
     }).then((data: string[][][]) => {
       if (data.length === 0) {
-        console.log('データ取得失敗');
+        console.error('データ取得失敗');
       } else {
         const chunk = new Chunk(x, z, data, this.textureImages);
         this.chunks.set(`${x}:${z}`, chunk);
       }
+    }).catch(error => {
+      console.error('データ取得失敗', error);
     }).finally(() => {
       this.loadChunkTasks.delete(`${x}:${z}`);
     });
