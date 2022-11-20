@@ -16,7 +16,7 @@ window.onload = async () => {
   const info = document.body.appendChild(document.createElement('pre'));
   const renderer = new MVP.Renderer(ctx);
   const camera = new MVP.PerspectiveCamera(
-    new MVP.Vec3(0, 0, 10), // pos
+    new MVP.Vec3(0, 70, 0), // pos
     new MVP.Vec3(0, 0, 0),  // rot
     1, // fov
     cvs.width / cvs.height, // aspect, w/h
@@ -76,11 +76,34 @@ cameraRotZ: ${camera.rotation.z}`;
   //     }
   //   }
   // };
+  // loadChunk();
+  // const loadChunk = () => {
+  //   worldViewer.loadChunk(
+  //     Math.floor(camera.position.x / 16),
+  //     Math.floor(camera.position.z / 16)
+  //   );
+  // };
+  // setInterval(loadChunk, 1000);
+
+  // 内側から順に読み込む
   const loadChunk = () => {
-    worldViewer.loadChunk(
-      Math.floor(camera.position.x / 16),
-      Math.floor(camera.position.z / 16)
-    );
+    const centerX = Math.floor(camera.position.x / 16);
+    const centerZ = Math.floor(camera.position.z / 16);
+    for (let limit = 0; limit < chunkRange; limit++) {
+      for (let modX = 0; modX <= limit; modX++) {
+        const modZ = limit - modX;
+        worldViewer.loadChunk(centerX + modX, centerZ + modZ);
+        if (modZ != 0 ) {
+          worldViewer.loadChunk(centerX + modX, centerZ - modZ);
+        }
+        if (modX != 0) {
+          worldViewer.loadChunk(centerX - modX, centerZ + modZ);
+          if (modZ != 0 ) {
+            worldViewer.loadChunk(centerX - modX, centerZ - modZ);
+          }
+        }
+      }
+    }
   };
   setInterval(loadChunk, 1000);
 
