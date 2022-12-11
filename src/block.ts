@@ -1,3 +1,5 @@
+import { Face } from '@ttk1/webgl2_mvp';
+
 // https://en.wikipedia.org/wiki/Web_colors
 const color = {
   'gray': [128, 128, 128].map(v => v / 255),
@@ -5,15 +7,40 @@ const color = {
   'white': [255, 255, 255].map(v => v / 255),
 };
 
+export type BlockData = {
+  x: number,
+  y: number,
+  z: number,
+  face: string,
+  material: string
+};
+
 export class Block {
+  public x: number;
+  public y: number;
+  public z: number;
+  public face: boolean[];
+  public material: string;
   public color: number[];
   public textureId: number;
   public transparent: boolean;
 
-  constructor(blockType: string) {
+  constructor(blockData: BlockData) {
+    this.x = blockData.x;
+    this.y = blockData.y;
+    this.z = blockData.z;
+    this.face = [];
+    this.face[Face.TOP] = blockData.face[Face.TOP] === '1';
+    this.face[Face.BOTTOM] = blockData.face[Face.BOTTOM] === '1';
+    this.face[Face.SOUTH] = blockData.face[Face.SOUTH] === '1';
+    this.face[Face.NORTH] = blockData.face[Face.NORTH] === '1';
+    this.face[Face.EAST] = blockData.face[Face.EAST] === '1';
+    this.face[Face.WEST] = blockData.face[Face.WEST] === '1';
+    this.material = blockData.material;
+
     // TODO: ブロックごとの色ってどう設定する？
     this.transparent = false;
-    switch (blockType) {
+    switch (blockData.material) {
       case null:
         this.transparent = true;
         break;

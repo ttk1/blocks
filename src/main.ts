@@ -1,5 +1,5 @@
 import * as MVP from '@ttk1/webgl2_mvp';
-import { WorldViewer } from './world_viewer';
+import { WorldViewer } from './worldViewer';
 
 window.onload = async () => {
   ////////////////////////////////

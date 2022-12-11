@@ -1,4 +1,4 @@
-import { Chunk } from './chunk';
+import { Chunk, ChunkData } from './chunk';
 
 export class World {
   private worldName: string;
@@ -11,6 +11,11 @@ export class World {
     this.loadChunkTasks = new Set();
     this.chunks = new Map<string, Chunk>();
     this.textureImages = textureImages;
+  }
+
+  // TODO
+  private validateChunkData(chunkData: object): chunkData is ChunkData {
+    return true;
   }
 
   /**
@@ -27,12 +32,12 @@ export class World {
     const dataUrl = `http://localhost:9000/?world_name=${this.worldName}&x=${x}&z=${z}`;
     fetch(dataUrl).then(response => {
       return response.json();
-    }).then((data: string[][][]) => {
-      if (data.length === 0) {
-        console.error('データ取得失敗');
-      } else {
-        const chunk = new Chunk(x, z, data, this.textureImages);
+    }).then((chunkData: object) => {
+      if (this.validateChunkData(chunkData)) {
+        const chunk = new Chunk(x, z, chunkData, this.textureImages);
         this.chunks.set(`${x}:${z}`, chunk);
+      } else {
+        console.error('データ取得失敗');
       }
     }).catch(error => {
       console.error('データ取得失敗', error);

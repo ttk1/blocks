@@ -31,7 +31,7 @@ export class WorldViewer {
       range = 7;
     }
     // カメラ周辺のチャンクのみ読み込む
-    const meshes: MVP.InstancedCube[] = [];
+    const meshes: MVP.InstancedMesh[] = [];
     const centerX = Math.floor(camera.position.x / 16);
     const centerZ = Math.floor(camera.position.z / 16);
     for (let modX = -range; modX < range; modX++) {
