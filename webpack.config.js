@@ -20,15 +20,9 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.glsl$/,
-      //exclude: [/node_modules/],
-      use: 'raw-loader'
-    },
-    {
       test: /\.ts$/,
       exclude: [/node_modules/],
       use: 'ts-loader'
-    }
-    ]
+    }]
   }
 };
