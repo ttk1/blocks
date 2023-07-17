@@ -1,4 +1,4 @@
-import * as MVP from '@ttk1/webgl2_mvp';
+import { FPSKeyboard, FPSMouse, PerspectiveCamera, Renderer, Vec3, fetchImage } from '@ttk1/easy-webgpu';
 import { WorldViewer } from './worldViewer';
 
 window.onload = async () => {
@@ -9,15 +9,14 @@ window.onload = async () => {
   const cvs = document.body.appendChild(document.createElement('canvas'));
   cvs.width = 1000;
   cvs.height = 500;
-  const ctx = cvs.getContext('webgl2', {
-    antialias: false, // TODO: 性能に応じてON/OFF切り替え
-    alpha: false
-  });
+  const ctx = cvs.getContext('webgpu');
+  const adapter = await navigator.gpu.requestAdapter();
+  const device = await adapter.requestDevice();
   const info = document.body.appendChild(document.createElement('pre'));
-  const renderer = new MVP.Renderer(ctx);
-  const camera = new MVP.PerspectiveCamera(
-    new MVP.Vec3(0, 70, 0), // pos
-    new MVP.Vec3(0, 0, 0),  // rot
+  const renderer = new Renderer(ctx, device);
+  const camera = new PerspectiveCamera(
+    new Vec3(0, 70, 0), // pos
+    new Vec3(0, 0, 0),  // rot
     1, // fov
     cvs.width / cvs.height, // aspect, w/h
     1, // near
@@ -29,9 +28,9 @@ window.onload = async () => {
   //   'white': await MVP.fetchImage('./texture/white.png')
   // };
   const textureImages = [
-    await MVP.fetchImage('./texture/gray.png'),
-    await MVP.fetchImage('./texture/brown.png'),
-    await MVP.fetchImage('./texture/white.png')
+    await fetchImage('./texture/gray.png'),
+    await fetchImage('./texture/brown.png'),
+    await fetchImage('./texture/white.png')
   ];
   const worldViewer = new WorldViewer('world', renderer, textureImages);
   const chunkRange = 7;
@@ -46,7 +45,7 @@ window.onload = async () => {
   const step = async (timestamp: number) => {
     const timeGap = timestamp - lastTimestamp;
     lastTimestamp = timestamp;
-    camera.move(new MVP.Vec3(
+    camera.move(new Vec3(
       keyboard.getLR() * timeGap / 50,
       keyboard.getUD() * timeGap / 50,
       keyboard.getFB() * timeGap / 50
@@ -107,8 +106,8 @@ cameraRotZ: ${camera.rotation.z}`;
   };
   setInterval(loadChunk, 1000);
 
-  const keyboard = new MVP.FPSKeyboard(window);
-  new MVP.FPSMouse(window, camera);
+  const keyboard = new FPSKeyboard(window);
+  new FPSMouse(window, camera);
   document.addEventListener('pointerlockchange', () => {
     if (document.pointerLockElement == null) {
       if (requestId != null) {

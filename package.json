@@ -12,7 +12,7 @@
     "url": "git+https://github.com/ttk1/blocks.git"
   },
   "keywords": [
-    "webgl"
+    "WebGPU", "Minecraft"
   ],
   "author": "tama@ttk1.net",
   "license": "MIT",
@@ -21,16 +21,17 @@
   },
   "homepage": "https://github.com/ttk1/blocks#readme",
   "devDependencies": {
-    "@ttk1/webgl2_mvp": "^1.1.4",
-    "@types/webgl2": "0.0.6",
-    "@typescript-eslint/eslint-plugin": "^5.46.0",
-    "@typescript-eslint/parser": "^5.46.0",
-    "eslint": "^8.29.0",
+    "@types/node": "^20.4.2",
+    "@ttk1/easy-webgpu": "^0.1.0",
+    "@webgpu/types": "^0.1.34",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
     "eslint-plugin-html": "^7.1.0",
-    "ts-loader": "^9.4.2",
-    "typescript": "^4.9.4",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }

@@ -1,4 +1,4 @@
-import { Face } from '@ttk1/webgl2_mvp';
+import { Face } from '@ttk1/easy-webgpu';
 
 // https://en.wikipedia.org/wiki/Web_colors
 const color = {

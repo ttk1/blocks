@@ -1,18 +1,18 @@
-import * as MVP from '@ttk1/webgl2_mvp';
+import { InstancedMesh, Light, PerspectiveCamera, Renderer, Scene } from '@ttk1/easy-webgpu';
 import { World } from './world';
 
 export class WorldViewer {
   private world: World;
-  private lights: MVP.Light[];
-  private renderer: MVP.Renderer;
+  private lights: Light[];
+  private renderer: Renderer;
 
-  constructor(worldName: string, renderer: MVP.Renderer, textureImages: HTMLImageElement[]) {
+  constructor(worldName: string, renderer: Renderer, textureImages: HTMLImageElement[]) {
     this.world = new World(worldName, textureImages);
     // ライトの設定
     // 一旦ここに置いておく
     this.lights = [
-      new MVP.Light(1, 2, 3),
-      new MVP.Light(-1, -2, -3)
+      new Light(1, 2, 3),
+      new Light(-1, -2, -3)
     ];
     this.renderer = renderer;
   }
@@ -25,13 +25,13 @@ export class WorldViewer {
     this.world.unloadChunk(x, z);
   }
 
-  public render(camera: MVP.PerspectiveCamera, range?: number) {
+  public render(camera: PerspectiveCamera, range?: number) {
     // デフォルトの読み込み範囲は 7 とする
     if (range == null) {
       range = 7;
     }
     // カメラ周辺のチャンクのみ読み込む
-    const meshes: MVP.InstancedMesh[] = [];
+    const meshes: InstancedMesh[] = [];
     const centerX = Math.floor(camera.position.x / 16);
     const centerZ = Math.floor(camera.position.z / 16);
     for (let modX = -range; modX < range; modX++) {
@@ -42,6 +42,6 @@ export class WorldViewer {
         }
       }
     }
-    this.renderer.render(new MVP.Scene(meshes, this.lights), camera);
+    this.renderer.render(new Scene(meshes, this.lights), camera);
   }
 }
